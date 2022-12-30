@@ -9,3 +9,9 @@
 08.Powershell_ActiveDirectory
 09.Powershell_Web
 10.Powershell_Remote
+
+
+* [01]Command_Prompt_(Microsoft_Windows)
+* [Discord](https://discord.gg/PowerShell)
+* [IRC](https://web.libera.chat/#powershell) on Libera.Chat
+* [Slack](https://aka.ms/psslack)
