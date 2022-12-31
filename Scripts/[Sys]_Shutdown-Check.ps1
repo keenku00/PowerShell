@@ -1,6 +1,6 @@
 <#
 	.DESCRIPTION
-		To check who turn off the Windows server, the script is created. 
+		Script to determine which account was used to turn off the Windows-based system and when it was turned off 
 	
 	.PARAMETER
 
@@ -9,7 +9,7 @@
 		Created on:   	3rd Sep., 2022
 		Created by:   	Jimmy Lee
 		Contact to:   	keenku00@naver.com
-		Filename:     	TBD
+		Filename:     	[Sys]_Shutdown-Check.ps1
 		===========================================================================		
 
     .Configuration Mnagement
@@ -17,6 +17,8 @@
         : Script creation
     2022.09.03
         : UAT done
+    2022.12.31
+        : Upload at Git
 #>
 
 <#
