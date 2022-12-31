@@ -8,8 +8,7 @@
 		===========================================================================
 		Created on:   	3rd Sep., 2022
 		Created by:   	Jimmy Lee
-		Contact to:   	jimmy.lee@daimler.com  
-		Corp. Info: 	  Mercedes-Benz Truck(Daimler Trucks Korea Ltd.),
+		Contact to:   	keenku00@naver.com
 		Filename:     	TBD
 		===========================================================================		
 
@@ -22,7 +21,6 @@
 
 <#
 [When execute the script taking much time, there're a few preparations we need to take care on the server itself.]
-
 ** Extract the shutdown log data from 1 Year ago as of now.
 #>
 
