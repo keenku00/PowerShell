@@ -34,7 +34,7 @@ $today = Get-Date
 $Days_defined = $Today.AddDays(-366)
 
 Get-EventLog -LogName system -Source user32 |
-Where-Object{($_.TimeGenerated -ge $Days_defined)} | fl * 
+Where-Object{($_.TimeGenerated -ge $Days_defined)} | Format-List * 
 
 <#
 [Extract the log data when the system was off by which account]
