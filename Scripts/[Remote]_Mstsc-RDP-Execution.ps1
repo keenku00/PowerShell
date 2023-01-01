@@ -83,7 +83,7 @@ $textBox3.width = 200;
 #############Define default values for the input boxes
 $defaultValue = “”
 $textBox1.Text = $defaultValue;
-$textBox2.Text = $defaultValue;
+$textBox2.Text = "apac\$defaultValue";
 $textBox3.Text = $defaultValue;
 
 #############define OK button
@@ -124,4 +124,7 @@ cmdkey /generic: $return[0] /user: $return[1] /pass: $return[2]
 # Connect MSTSC with servername and credentials created before
 mstsc /v: $return[0]
 # Delete the credentials after MSTSC session is done
-cmdkey /delete:TERMSRV/$return[0]
+if($?) {
+    Write-Host "Session established"
+    Start-Sleep -s 60
+    cmdkey /delete: $return[0] }
