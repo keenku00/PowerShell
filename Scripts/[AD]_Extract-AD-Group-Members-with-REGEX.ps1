@@ -9,7 +9,7 @@
 		Created on:   	25th Nov., 2022
 		Created by:   	Jimmy Lee
 		Contact to:   	keenku00@naver.com
-		Filename:     	
+		Filename:     	[AD]_Extract-AD-Group-Members-with-REGEX.ps1
 		===========================================================================		
 
     .Configuration Mnagement
@@ -18,7 +18,7 @@
     2022.11.25
         : UAT done
     2022.12.31
-        : [AD]_Extract-AD-Group-Members-with-REGEX.ps1
+        : Upload in Git
 #>
 
 Get-Date
