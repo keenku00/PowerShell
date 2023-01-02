@@ -9,7 +9,7 @@
 		Created on:   	3rd Sep., 2022
 		Created by:   	Jimmy Lee
 		Contact to:   	keenku00@naver.com
-		Filename:     	[Sys]_Mstsc-Access-Check.ps1
+		Filename:     	[Sys-Security]_Mstsc-Access-Check.ps1
 		===========================================================================		
 
     .Configuration Mnagement
