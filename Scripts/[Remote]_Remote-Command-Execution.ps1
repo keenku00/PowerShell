@@ -33,8 +33,8 @@ $PWord = ""
 #Make the password encrypted
 $PWord_secured = ConvertTo-SecureString -String $PWord -AsPlainText -Force
 
-#Remove the existing variable set as plain text.
-Remove-Variable $PWord
+#Overwrite the plain text as radom value.
+$PWord = Get-Random
 
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $User, $PWord_secured
 
