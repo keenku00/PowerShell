@@ -34,7 +34,7 @@ $target_hostname = ""
 $PWord_secured = ConvertTo-SecureString -String $PWord -AsPlainText -Force
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $User, $PWord_secured
 
-#Remove the existing variable set as plain text.
-Remove-Variable $PWord
+#Overwrite the plain text as radom value.
+$PWord = Get-Random
 
 Enter-PSSession -ComputerName $target_hostname -Port 5985 -Credential $Credential
