@@ -26,10 +26,10 @@ $Net_profile = Get-NetConnectionProfile | Select-Object -ExpandProperty Name
 $Result = $Net_profile -match 'corpdir.net'
 
 #Input the administrative account to execute the script with admin. permission.
-$User = "apac\a191_s_win10admin"
+$User = ""
 
 #Input the password coressponding to the administrative ID above.
-$PWord = "PpdbS3:WD=>27yL.3nY&" 
+$PWord = "" 
 
 #Make the password encrypted
 $PWord_secured = ConvertTo-SecureString -String $PWord -AsPlainText -Force
