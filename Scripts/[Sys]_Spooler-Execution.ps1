@@ -1,7 +1,6 @@
 <#
 	.DESCRIPTION
-		The important service commonly used by business users would be spooler service, but it's not smoothly supported when they got faced the issue since they're not highly likely having an administrative permission correctly.
-    That's why the following script was created having the administrative credential.
+		The important service commonly used by business users would be spooler service, but it's not smoothly supported when they got faced the issue since they're not highly likely having an administrative permission correctly. That's why the following script was created having the administrative credential.
 	
 	.PARAMETER
 
@@ -14,13 +13,14 @@
 		===========================================================================		
 
     .Configuration Mnagement
-    2023.01.03
+    2022.01.03
         : Script creation
-    2023.01.03
+    2022.01.03
         : UAT done
-    2023.01.03
+    2022.01.03
         : Upload in Git
 #>
+
 #Check if the network profile is established with corporate network or not.
 $Net_profile = Get-NetConnectionProfile | Select-Object -ExpandProperty Name
 $Result = $Net_profile -match 'corpdir.net'
@@ -40,6 +40,10 @@ $PWord = Get-Random
 #Create a new credential with the corporate network.
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $User, $PWord_secured
 
+#Invoke-Command $env:COMPUTERNAME -ScriptBlock {
+#    Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine -ErrorAction SilentlyContinue } -Credential $credential
+
+Add-Type -AssemblyName PresentationFramework
 
 if($Result -ne "corpdir.net") {
     [System.Windows.MessageBox]::Show('Please connect to DAIMLER network at first. In case for using VPN, please utilize EmergencyVPN instead of Pulse VPN.','Spooler service','YesNoCancel','error') }
@@ -50,34 +54,24 @@ else {
     ## Do something
     Invoke-Command $env:COMPUTERNAME -ScriptBlock {
     $PrintSpooler = Get-Service -Name Spooler
-    # Get the Print Spooler Service status (Running or Stopped)
-    $PrintSpooler
     # Logic to check Print Spooler Service and restart if not running
     if($PrintSpooler.Status -eq 'stopped') {
     # Start Print Spooler Service on local computer
-    Start-Service $PrintSpooler
-    }
-    
-    # Check the Print Spool Service status
-    $PrintSpooler
+    Start-Service $PrintSpooler }
     } -Credential $credential
         $PrintSpooler = Get-Service -Name Spooler
         if($PrintSpooler.Status -eq 'Running') {
-            [System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms')
             [System.Windows.Forms.MessageBox]::Show('Spooler service is running okay.','Information')
             }
         else {
-            [System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms')
             [System.Windows.Forms.MessageBox]::Show('Spooler service is still having an issue.','error')
             }
     }
     'No' {
-        [System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms')
         [System.Windows.Forms.MessageBox]::Show('Execution canceled.','Information')
     }
     'Cancel' {
         ## Do something
-        [System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms')
         [System.Windows.Forms.MessageBox]::Show('Execution canceled.','Information')
     }}
 }
