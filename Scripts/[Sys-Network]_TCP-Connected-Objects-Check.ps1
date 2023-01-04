@@ -9,7 +9,7 @@
 		Created on:   	14th July, 2022
 		Created by:   	Jimmy Lee
 		Contact to:   	keenku00@naver.com
-		Filename:     	[Sys]_TCP-Connection-Check.ps1
+		Filename:     	[Sys-Network]_TCP-Connected-Objects-Check.ps1
 		===========================================================================		
 
     .Configuration Mnagement
