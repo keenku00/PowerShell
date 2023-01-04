@@ -13,12 +13,6 @@ function Show-ADGroupTreeViewMembers {
 .OUTPUTS
     Microsoft.ActiveDirectory.Management.ADGroup
     Microsoft.ActiveDirectory.Management.ADuser
-.NOTES
-    Version:        2.0
-    Author:         Kunal Udapi
-    Creation Date:  10 September 2017
-    Purpose/Change: Get the nested downstream group info of member
-    Useful URLs: http://vcloud-lab.com
 .EXAMPLE
     PS C:\>.\Show-ADGroupTreeViewMembers -GroupName 'Administrators'
     This list all the upstream memberof group of a Group.
