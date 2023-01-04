@@ -21,12 +21,6 @@ function Get-ADGroupTreeViewMemberOf {
     Microsoft.ActiveDirectory.Management.ADUser
 .OUTPUTS
     Microsoft.ActiveDirectory.Management.ADGroup
-.NOTES
-    Version:        1.0
-    Author:         Kunal Udapi
-    Creation Date:  10 September 2017
-    Purpose/Change: Get the exact nested group info of user
-    Useful URLs: http://vcloud-lab.com
 .EXAMPLE
     PS C:\>.\Get-ADGroupTreeViewMemberOf -UserName Administrator
 
