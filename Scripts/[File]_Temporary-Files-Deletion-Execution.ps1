@@ -19,10 +19,12 @@ Get-Date | Get-Member
 (Get-Date).AddDays(-1)
 $today = Get-Date
 $DaysToDelete = $Today.AddDays(-1)
+
+#The path needs to be handled should be clarified in the array below.
 $path = "PATH needed to be handled"
-$Fi1 = "Data_older_than_1_day_will_be_periodically_deleted.txt"
 
 <#Exceptional cases#>
+$Fi1 = "Data_older_than_1_day_will_be_periodically_deleted.txt"
 $Fo1 = "KT"
 $Fo2 = "A002"
 
