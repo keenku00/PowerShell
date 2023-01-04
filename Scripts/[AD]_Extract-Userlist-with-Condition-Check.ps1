@@ -28,18 +28,20 @@ $Date = Get-Date
 $today = $date.ToString("yyyy-MM-dd")
 $todayDetails = $date.ToString("yyyy-MM-dd_HH-mm")
 
-$Key_MBK = "3943"
-$Key_DTK = "8524"
-$key_MBMK = "3359"
+#Input the key vaule belonged in the accounts.
+$Key_MBK = ""
+$Key_DTK = ""
+$key_MBMK = ""
 $New_RD = @()
 $New_MBK = @()
 $New_MBMK = @()
 $New_DTK = @()
 
-$RD = Get-ADUser -Filter * -SearchBase "OU=Users, OU=_GlobalResources, OU=RD, OU=A191, DC=apac, DC=corpdir, DC=net" -Properties * | select-object Name, SamAccountName, EmailAddress, userAccountControl, lastLogonTimestamp, lastlogon, department, company, dcxSiteCode, Organization
-$MBK = Get-ADUser -Filter * -SearchBase "OU=Users, OU=_GlobalResources, OU=A191, DC=apac, DC=corpdir, DC=net" -Properties * | select-object Name, SamAccountName, EmailAddress, userAccountControl, lastLogonTimestamp, lastlogon, department, company, dcxSiteCode, Organization
-$DTK = Get-ADUser -Filter * -SearchBase "OU=Users, OU=_GlobalResources, OU=DTK, OU=A191, DC=apac, DC=corpdir, DC=net" -Properties * | select-object Name, SamAccountName, EmailAddress, userAccountControl, lastLogonTimestamp, lastlogon, department, company, dcxSiteCode, Organization
-$MBMK = Get-ADUser -Filter * -SearchBase "OU=Users, OU=_GlobalResources, OU=MBMK, OU=A191, DC=apac, DC=corpdir, DC=net" -Properties * | select-object Name, SamAccountName, EmailAddress, userAccountControl, lastLogonTimestamp, lastlogon, department, company, dcxSiteCode, Organization
+#Input the "LDAP OU Path" including user objects.
+$RD = Get-ADUser -Filter * -SearchBase "LDAP OU Path" -Properties * | select-object Name, SamAccountName, EmailAddress, userAccountControl, lastLogonTimestamp, lastlogon, department, company, dcxSiteCode, Organization
+$MBK = Get-ADUser -Filter * -SearchBase "LDAP OU Path" -Properties * | select-object Name, SamAccountName, EmailAddress, userAccountControl, lastLogonTimestamp, lastlogon, department, company, dcxSiteCode, Organization
+$DTK = Get-ADUser -Filter * -SearchBase "LDAP OU Path" -Properties * | select-object Name, SamAccountName, EmailAddress, userAccountControl, lastLogonTimestamp, lastlogon, department, company, dcxSiteCode, Organization
+$MBMK = Get-ADUser -Filter * -SearchBase "LDAP OU Path" -Properties * | select-object Name, SamAccountName, EmailAddress, userAccountControl, lastLogonTimestamp, lastlogon, department, company, dcxSiteCode, Organization
 
 Foreach($i in $RD) {
     if($i.Organization -eq $key_MBK) {
@@ -65,7 +67,7 @@ Foreach($i in $DTK) {
     }
 }
 
-$New_RD | export-csv -path "\\s191f0000004.kr191.corpintra.net\A191_S-SHARE\1. Company Information_All\IT\07. Service Desk\AD_Info\MBKRD\$todayDetails.csv"
-$New_MBK | export-csv -path "\\s191f0000004.kr191.corpintra.net\A191_S-SHARE\1. Company Information_All\IT\07. Service Desk\AD_Info\MBK\$todayDetails.csv"
-$New_DTK | export-csv -path "\\s191f0000004.kr191.corpintra.net\A191_S-SHARE\1. Company Information_All\IT\07. Service Desk\AD_Info\DTK\$todayDetails.csv"
-$New_MBMK | export-csv -path "\\s191f0000004.kr191.corpintra.net\A191_S-SHARE\1. Company Information_All\IT\07. Service Desk\AD_Info\MBMK\$todayDetails.csv"
+$New_RD | export-csv -path "$env:USERPROFILE\MBK-RD_$todayDetails.csv"
+$New_MBK | export-csv -path "$env:USERPROFILE\MBK_$todayDetails.csv"
+$New_DTK | export-csv -path "$env:USERPROFILE\DTK_$todayDetails.csv"
+$New_MBMK | export-csv -path "$env:USERPROFILE\MBMK_$todayDetails.csv"
