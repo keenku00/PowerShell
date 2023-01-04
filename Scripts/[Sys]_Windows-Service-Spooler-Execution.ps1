@@ -9,7 +9,7 @@
 		Created on:   	3rd Jan., 2023
 		Created by:   	Jimmy Lee
 		Contact to:   	keenku00@naver.com
-		Filename:     	[Sys]_Spooler-Execution.ps1
+		Filename:     	[Sys]_Windows-Service-Spooler-Execution.ps1
 		===========================================================================		
 
     .Configuration Mnagement
