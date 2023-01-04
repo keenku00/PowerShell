@@ -92,5 +92,4 @@ Param
     } #Process
 }
 
-  Show-ADGroupTreeViewMembers -GroupName Administrators
-  Show-ADGroupTreeViewMembers -GroupName E
+Show-ADGroupTreeViewMembers -GroupName ""
