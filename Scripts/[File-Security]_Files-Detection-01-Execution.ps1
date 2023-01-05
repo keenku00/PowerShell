@@ -1,6 +1,7 @@
 <#
 	.DESCRIPTION
-		Copy&paste the files stored in specific path, then remove existing files. 
+		Detecting specific files stored in all drives built-in system.
+    		Type01(Various file names & unique extension)
 	
 	.PARAMETER
 	.NOTES
@@ -8,7 +9,7 @@
 		Created on:   	5th Jan., 2023
 		Created by:   	Jimmy Lee
 		Contact to:   	keenku00@naver.com
-		Filename:     [File-Security]_Files-Detection-01-Execution.ps1
+		Filename:       [File-Security]_Files-Detection-01-Execution.ps1
 		===========================================================================		
     .Configuration Mnagement
     2023.01.05
