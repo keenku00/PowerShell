@@ -1,5 +1,5 @@
 #PowerShell script to get the browsing history of Google Chrome
-
+#Reference: https://www.hexnode.com/mobile-device-management/help/script-to-fetch-browsing-history-on-windows-10-devices/#powershell-script-to-get-the-browsing-history-of-google-chrome
 $UserName = "USERNAME" 
 $UserName        
 $Path = "$Env:systemdrive\Users\$UserName\AppData\Local\Google\Chrome\User Data\Default\History" 
