@@ -19,6 +19,7 @@
     2023.01.12
         : Upload in Git
 #>
+
 ##Authentication by using computer DNS domain name
 ##If the user doesn't want to set this authentication step, please remove the following if loop only.
 $Authentication = $env:ComputerDNSDomain;
@@ -444,8 +445,9 @@ if($?) {
         ##Once the word files were all moved into the path, initiate converting the word files into pdf files.
             $j = ConvertWordTo-PDF -SourceFolder $Word_path -DestinationFolder $Pdf_path
                 if($?) {
-                    Write-host "The execution was done, for the details please refer to the logfile($env:USERPROFILE\desktop\$Logfile_name)."; }
-                    }
+                $j=@(); $j = Get-ChildItem -path "C:\Users\LEEJIMM\Desktop\New folder (2)" | select @{ Label="PDF_File_name";Expression={$_.Name}}; write-host $j;
+                Write-host "The execution was done. For any technical issues, please refer to the logfile($env:USERPROFILE\desktop\$Logfile_name)."; }
+                }
 }
 
 Stop-Transcript
