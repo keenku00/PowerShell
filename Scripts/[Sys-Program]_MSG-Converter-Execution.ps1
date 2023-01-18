@@ -276,9 +276,9 @@ function button ($title, $Input_1, $Input_2, $Input_3) {
 
 #####Define the form size & placement
 
-$Input_4 = "※Alert:: The number of .msg files must not be over 500./최대 변환 가능 메일 갯수는 500개 입니다."
-$Input_5 = "※Copyright 2023 DAIMLER TRUCKS KOREA IT Dept. all rights reserved."
-$Input_6 = "For any query, please contact to jimmy.lee@daimler.com"
+$Input_4 = "※ Caution.1: The maximum number of available .msg file is 500, please set it under 500." 
+$Input_5 = "※ Caution.2: Before execution, please turn off Outlook App at first. Then utilize Outlook Web."
+$Input_6 = "For any query, please contact to daimler.dtk_it@daimler.com"
 
 $form = New-Object “System.Windows.Forms.Form”;
 $form.Width = 890;
@@ -427,13 +427,15 @@ $return= button “File (.msg > .word, .pdf)converter(.msg파일을 Word & PDF�
 $Msg_path = $return[0]
 $Word_path = $return[1]
 $Pdf_path = $return[2]
-$a = ConvertFrom-MsgToDoc -Path "$Msg_path"
 
 ##Validate if the total amount of mail is over 500 or not, if it's over 500, make it closed.
 $msg_count = Get-ChildItem -Path $Msg_path | Select-Object -ExpandProperty 'Name' | Select-String -Pattern '.msg'
 if($msg_count.count -gt 500) { Write-host "Failed to exceute the program, the total number of .msg file must be less than 500."
     Start-Sleep 10;
     Exit }
+
+##Once the above check is done, start converting the msg files into word file at first.
+$a = ConvertFrom-MsgToDoc -Path "$Msg_path" -ErrorAction SilentlyContinue
 
 $i = @();
 $j = @();
@@ -443,9 +445,9 @@ if($?) {
         Move-Item -Path "$Msg_path\$i" -Destination "$Word_path\$i" }
         if($?) {
         ##Once the word files were all moved into the path, initiate converting the word files into pdf files.
-            $j = ConvertWordTo-PDF -SourceFolder $Word_path -DestinationFolder $Pdf_path
+            $j = ConvertWordTo-PDF -SourceFolder $Word_path -DestinationFolder $Pdf_path -ErrorAction SilentlyContinue
                 if($?) {
-                $j=@(); $j = Get-ChildItem -path "C:\Users\LEEJIMM\Desktop\New folder (2)" | select @{ Label="PDF_File_name";Expression={$_.Name}}; write-host $j;
+                $j=@(); $j = Get-ChildItem -path $Pdf_path | select @{ Label="PDF_File_name";Expression={$_.Name}}; write-host $j;
                 Write-host "The execution was done. For any technical issues, please refer to the logfile($env:USERPROFILE\desktop\$Logfile_name)."; }
                 }
 }
