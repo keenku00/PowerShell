@@ -107,8 +107,8 @@ $minTimePicker.Value
 $maxTimePicker.Value
 
 $extension_type = Read-Host -Prompt "Input the extension type(ex. jpg, png, pdf, etc.)";
-$s1 = Read-Host -Prompt "Input the term#1 you want to add";
-$s2 = Read-Host -Prompt "Input the term#2 you want to add";
+$s1 = Read-Host -Prompt "Keyword#1 you want to set the file name(ex. Keyword#1-Keyword#2-#Order.extension)";
+$s2 = Read-Host -Prompt "Keyword#2 you want to set the file name(ex. Keyword#1-Keyword#2-#Order.extension)";
 
 $Kakao_Path_Kor = "$env:USERPROFILE\Documents\카카오톡 받은 파일";
 $Kakao_Path_Eng = "$env:USERPROFILE\Documents\KakaoTalk Downloads";
@@ -121,7 +121,7 @@ if($Kakao_Path_Kor_exist) {
     $Kakao_Path_Default = $Kakao_Path_Kor; }
     elseif($Kakao_Path_Eng_exist) {
     $Kakao_Path_Default = $Kakao_Path_Eng; }
-else {Write-Host "No Kakao repository"}
+    else {Write-Host "No Kakao repository"}
 
 $a = Get-ChildItem -Path "$Kakao_Path_Default" -Recurse -Filter "*.$extension_type" | 
 Where-Object{($_.LastWriteTime.Date -eq $datePicker.Value.Date) -and ($_.LastWriteTime.TimeOfDay -gt $minTimePicker.Value.TimeOfDay) -and ($_.LastWriteTime.TimeOfDay -lt $maxTimePicker.Value.TimeOfDay) } | Select-Object -ExpandProperty "FullName"
