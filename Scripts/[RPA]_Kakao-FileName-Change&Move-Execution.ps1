@@ -20,6 +20,12 @@
         : Upload in Git
 #>
 
+$today = Get-Date
+$todayDetails = $today.ToString("yyyy-MM-dd_HH-mm")
+$New_repository = New-Item -Path "$env:USERPROFILE\Desktop\$todayDetails" -ItemType Directory
+
+Start-Transcript -Path "$New_repository\$todayDetails.txt" -Append
+
 #Set-Executionpolicy -Scope CurrentUser -ExecutionPolicy UnRestricted
 
 # TimeFramePicker.ps1
@@ -96,14 +102,9 @@ $mainForm.Controls.Add($okButton)
  
 [void] $mainForm.ShowDialog()
 
+$datePicker.Value
 $minTimePicker.Value
 $maxTimePicker.Value
-
-$today = Get-Date
-$todayDetails = $today.ToString("yyyy-MM-dd_HH-mm")
-$New_repository = New-Item -Path "$env:USERPROFILE\Desktop\$todayDetails" -ItemType Directory
-
-Start-Transcript -Path "$New_repository\$todayDetails.txt" -Append
 
 $extension_type = Read-Host -Prompt "Input the extension type(ex. jpg, png, pdf, etc.)";
 $s1 = Read-Host -Prompt "Input the term#1 you want to add";
@@ -113,24 +114,17 @@ $Kakao_Path_Kor = "$env:USERPROFILE\Documents\카카오톡 받은 파일";
 $Kakao_Path_Eng = "$env:USERPROFILE\Documents\KakaoTalk Downloads";
 $Kakao_Path_Default = @();
 
-$BasementDate_Start = $minTimePicker.Value;
-$BasementDate_End = $maxTimePicker.Value;
-
 $Kakao_Path_Kor_exist = Test-path $Kakao_Path_Kor;
 $Kakao_Path_Eng_exist = Test-path $Kakao_Path_Eng;
 
-If($Kakao_Path_Kor_exist -eq $false) {
-	If($Kakao_Path_Eng_exist -eq $false) {
-		Write-host "There's no default Kakao repository" }
-	elseif($Kakao_Path_Eng_exist -eq $true) {
-		Write-host "The default Kakao repository is $Kakao_Path_Eng"
-        $Kakao_Path_Default = $Kakao_Path_Eng; }
-else { 
-    Write-host "The default Kakao repository is $Kakao_Path_Kor"
+if($Kakao_Path_Kor_exist) {
     $Kakao_Path_Default = $Kakao_Path_Kor; }
-}
+    elseif($Kakao_Path_Eng_exist) {
+    $Kakao_Path_Default = $Kakao_Path_Eng; }
+else {Write-Host "No Kakao repository"}
 
-$a = Get-ChildItem -Path "$Kakao_Path_Default" -Recurse -Filter "*.$extension_type" | Where-Object{($_.LastWriteTime -gt $BasementDate_Start) -and ($_.LastWriteTime -lt $BasementDate_End)} | Select-Object -ExpandProperty "FullName"
+$a = Get-ChildItem -Path "$Kakao_Path_Default" -Recurse -Filter "*.$extension_type" | 
+Where-Object{($_.LastWriteTime.Date -eq $datePicker.Value.Date) -and ($_.LastWriteTime.TimeOfDay -gt $minTimePicker.Value.TimeOfDay) -and ($_.LastWriteTime.TimeOfDay -lt $maxTimePicker.Value.TimeOfDay) } | Select-Object -ExpandProperty "FullName"
 $j = 1;
 foreach($i in $a) {
     Rename-Item -Path $i -newname "$s1-$s2-$j.$extension_type"
@@ -139,7 +133,10 @@ foreach($i in $a) {
 
 if(($?) -and (Test-path $New_repository.FullName)) {
     $b = Get-ChildItem -Path "$Kakao_Path_Default" -Recurse | Where-Object{$_.Name -like "*$s1-$s2-*"}
-    $b | Move-Item -Destination $New_repository.FullName -Force;
+        if($?) {
+        Get-FileHash -Path $b.fullname -Algorithm SHA256;
+        $b | Move-Item -Destination $New_repository.FullName -Force;
     }
+}
 
 Stop-Transcript
