@@ -9,7 +9,7 @@
 		Created on:   	11th Jan., 2023
 		Created by:   	Jimmy Lee
 		Contact to:   	keenku00@naver.com
-		Filename:       [Sys-Program]_MSG-Converter-Execution.ps1
+		Filename:       [RPA]_MSG-Converter-Execution.ps1
 		===========================================================================		
     .Configuration Mnagement
     2023.01.11
