@@ -1,6 +1,6 @@
 <#
 	.DESCRIPTION
-		Extract & collect the members' name belonged in AD group defined as specific naming rules. 
+		To roughly estimate the distance by using the RTT value, this script was created. 
 	
 	.PARAMETER
 	.NOTES
