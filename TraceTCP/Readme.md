@@ -13,10 +13,12 @@ But, as the TraceTCP function works with Winpcap, the Winpcap library (http://ww
 
 # Installation
 
-You MUST install the winpcap library (http://www.winpcap.org) first.
-Just copy tracetcp.exe into a directory that is in you system PATH.
+1. The winpcap library (http://www.winpcap.org) at first.
+2. Then, the execution program should be downloaded from (https://github.com/keenku00/PowerShell/blob/23ed847ff19233f07b221d97c49f58772c4cc2e6/TraceTCP/Tracetcp.zip).
 
 # Usage
+
+1. In Powershell environment, go to the path having the "tracetcp.exe" execution file. Then, execute the program with the conditions below.
 
 From the command prompt:
 ```
@@ -73,46 +75,5 @@ Examples:
 
 # Revision History
 
-### version 1.0.3 24-11-2016
-* Add support for HSRP routers (fix provided by Dresco)
-
-### version 1.0.2 07-01-2016
-* if destination reached but port is closed, this maybe due to some hosts not allowing connections with ttl = 0. Resend ping with large ttl to see if its really closed. 
-
-### version 1.0.1 05-01-2016
-* make a generated SYN packet look as much like a SYN from chrome on windows as packets with no options were being dropped by some hosts
-
-### version 1.0.0 23-06-2014
-* Upgraded solution to Visual Studio 2013
-* Moved Repo to GitHub
-
-### version 0.99.4 beta 23-05-2005
-* fixed problem with in-accurate hop timing.
-
-### version 0.99.3 beta 21-05-2005
-* added winpcap support to bypass Microsofts removal of raw tcp sockets in xp sp2.
-* added -g option to override the default gateway
-* added -R option to revert to using raw sockets
-
-### version 0.99.2 beta 23-04-2004
-* Added -s option for "Easy port scan"
-* Added abitity to combine options on the command line e.g -cnr 10 30 instead of -c -n - r 10 30
-* Updated readme.txt with more info about software firewalls.
-* Fixed bug in anti-flood timeout code.
-* Added -F option to disable the anti-flood timer.
-* complete ip header construction - not leaving any fields for winsock to fill in now.
-
-### version 0.99.1 beta 25-08-2003
-* Added start hop option (-h) and changed help to -?
-* Added port range option -r to allow port scanning
-* Separated Tracing code and results display so that different display formats can be supported.
-* Added Condensed output mode (-c)
-* Added pings per hop option (-p)
-* Fixed a few Problems with the way packets were built
-* Visual Studio project files now included in source archive
-
-### version 0.99 beta 19-08-2003
-* First release on sourceforge.
-
-### version 0.90beta 21-07-2003
-* Internal test version.
+### version 1.0.0 2023.01.29
+* Create the read.me file.
