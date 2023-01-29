@@ -1,8 +1,8 @@
 # Welcome to tracetcp.
 
-Full documentation available here: http://simulatedsimian.github.io/tracetcp.html 
+The full documentation is available here: http://simulatedsimian.github.io/tracetcp.html 
 
-TraceTCP is a such a function to use TCP SYN Patckets which's based on an Win32. Rather than using tracerout or ping function, the TraceTCP would be better because the ICMP/UDP packets are highly likely to be filtered/blocked while they're heading to destnation.
+The TraceTCP is such a function to use TCP SYN Patckets which's based on an Win32. Rather than using trace route or ping function, the TraceTCP would be much better because the ICMP/UDP packets are highly likely to be filtered/blocked while they're heading to destnation.
 
 Indeed, the TraceTCP allows a trace to be performed over any TCP port. This allows the discovery of what ports a filewall blocks and also the presence of any transparent proxies that have been put in place.
 
