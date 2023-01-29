@@ -1,26 +1,25 @@
-# ![logo][] PowerShell
-All PowerShell scripts mentioned in this repository are created for IT security tasks.
+# Welcome to tracetcp.
 
-[logo]: https://raw.githubusercontent.com/PowerShell/PowerShell/master/assets/ps_black_64.svg?sanitize=true
+Full documentation available here: http://simulatedsimian.github.io/tracetcp.html 
 
-* 01.Command_Prompt_(Microsoft_Windows)
-* 02.Powershell_Learning
-* 03.Powershell_Script
-* 04.WMI
-* 05.Powershell_Network
-* 06.Powershell_Popup
-* 07.Powershell_Program
-* 08.Powershell_ActiveDirectory
-* 09.Powershell_Web
-* 10.Powershell_Remote
+TraceTCP is a such a function to use TCP SYN Patckets which's based on an Win32. Rather than using tracerout or ping function, the TraceTCP would be better because the ICMP/UDP packets are highly likely to be filtered/blocked while they're heading to destnation.
 
-# Code of Conduct
+Indeed, the TraceTCP allows a trace to be performed over any TCP port. This allows the discovery of what ports a filewall blocks and also the presence of any transparent proxies that have been put in place.
 
-For more information see the [Code of Conduct FAQ][conduct-FAQ] or contact [keenku00@naver.com][conduct-email] with any additional questions or comments.
+# System Requirements
 
-[conduct-FAQ]: https://blog.naver.com/jimmy_jib
-[conduct-email]: mailto:keenku00@naver.com
+Since WinPcap is completely unsupported, there might have compatibility issues with current versions of Windows.
+But, as the TraceTCP function works with Winpcap, the Winpcap library (http://www.winpcap.org) must be installed in advance.
 
+# Installation
+
+You MUST install the winpcap library (http://www.winpcap.org) first.
+Just copy tracetcp.exe into a directory that is in you system PATH.
+
+# Usage
+
+From the command prompt:
+```
 tracetcp host [options]
     where host = hostName|ipAddress[:portNumber|serviceName]
     if portNumber or serviceName is not present then port 80 (http) 
@@ -69,3 +68,51 @@ Examples:
     tracetcp www.microsoft.com:80 -m 60
     tracetcp post.sponge.com:smtp
     tracetcp 192.168.0.1 -n -t 500
+```
+
+
+# Revision History
+
+### version 1.0.3 24-11-2016
+* Add support for HSRP routers (fix provided by Dresco)
+
+### version 1.0.2 07-01-2016
+* if destination reached but port is closed, this maybe due to some hosts not allowing connections with ttl = 0. Resend ping with large ttl to see if its really closed. 
+
+### version 1.0.1 05-01-2016
+* make a generated SYN packet look as much like a SYN from chrome on windows as packets with no options were being dropped by some hosts
+
+### version 1.0.0 23-06-2014
+* Upgraded solution to Visual Studio 2013
+* Moved Repo to GitHub
+
+### version 0.99.4 beta 23-05-2005
+* fixed problem with in-accurate hop timing.
+
+### version 0.99.3 beta 21-05-2005
+* added winpcap support to bypass Microsofts removal of raw tcp sockets in xp sp2.
+* added -g option to override the default gateway
+* added -R option to revert to using raw sockets
+
+### version 0.99.2 beta 23-04-2004
+* Added -s option for "Easy port scan"
+* Added abitity to combine options on the command line e.g -cnr 10 30 instead of -c -n - r 10 30
+* Updated readme.txt with more info about software firewalls.
+* Fixed bug in anti-flood timeout code.
+* Added -F option to disable the anti-flood timer.
+* complete ip header construction - not leaving any fields for winsock to fill in now.
+
+### version 0.99.1 beta 25-08-2003
+* Added start hop option (-h) and changed help to -?
+* Added port range option -r to allow port scanning
+* Separated Tracing code and results display so that different display formats can be supported.
+* Added Condensed output mode (-c)
+* Added pings per hop option (-p)
+* Fixed a few Problems with the way packets were built
+* Visual Studio project files now included in source archive
+
+### version 0.99 beta 19-08-2003
+* First release on sourceforge.
+
+### version 0.90beta 21-07-2003
+* Internal test version.
