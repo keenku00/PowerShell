@@ -46,3 +46,5 @@ Where-Object {$_.RemoteAddress -ne '0.0.0.0'} |
         'User'= (Get-Process -IncludeUserName -Id $_.OwningProcess).Username
         }
     }
+
+$TCP_Result | Format-Table -Property * -AutoSize | Out-String -Width 18096
