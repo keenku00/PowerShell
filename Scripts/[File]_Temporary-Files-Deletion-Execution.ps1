@@ -18,7 +18,7 @@ $todayDetails = $today.ToString("yyyy-MM-dd_HH-mm")
 (Get-Date).AddDays(-1)
 $today = Get-Date
 $DaysToDelete = $today.AddDays(-1)
-$path = ""
+$path = "\\s191f0000004.kr191.corpintra.net\a191_t-temp"
 
 # Define the path to the folder
 $logpath = "C:\AD_Temp-deletion"
@@ -42,10 +42,10 @@ $Main_path_2 = $Main_path | Where-Object {$_.LastWriteTime -lt $DaysToDelete}
 
 foreach ($directory in $Main_path_2) {
     if (Test-Path $directory) {
-        Remove-Item $path -Force -Confirm:$false -ErrorAction SilentlyContinue
-        Write-Host "File '$path' deleted."
+        Remove-Item $directory -Force -Confirm:$false -ErrorAction SilentlyContinue
+        Write-Host "File '$directory' deleted."
     } else {
-        Write-Host "File '$path' not found."
+        Write-Host "File '$directory' not found."
     }
 }
 
