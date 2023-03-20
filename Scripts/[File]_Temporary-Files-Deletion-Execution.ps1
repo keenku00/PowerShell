@@ -1,6 +1,6 @@
 <#
 	.DESCRIPTION
-		: Corporate policy requires all files stored in a temporary path to be deleted based on a reference date.
+		: As per MBK/DTK security policy, the all files belonged in "T" drive must be removed in case when they're over 1 day.
 	
 	.PARAMETER
 
@@ -11,22 +11,42 @@
         : Script creation
     2022.03.04
         : Script was modified to remove the files on a daily basis, not an weekly basis.
-    2022.12.31
-        : Upload in Git
 #>
-Get-Date
-Get-Date | Get-Member
+Get-date
+$todayDetails = $today.ToString("yyyy-MM-dd_HH-mm")
+
 (Get-Date).AddDays(-1)
 $today = Get-Date
-$DaysToDelete = $Today.AddDays(-1)
+$DaysToDelete = $today.AddDays(-1)
+$path = ""
 
-#The path needs to be handled should be clarified in the array below.
-$path = "PATH needed to be handled"
+# Define the path to the folder
+$logpath = "C:\AD_Temp-deletion"
+
+# Check if the folder exists at the specified path, then the $path value is set the path to store the log data.
+if (Test-Path -Path $logpath -PathType Container) {
+    Write-Host "The folder '$logpath' exists."
+} else {
+    Write-Host "The folder '$logpath' does not exist."
+    New-Item -ItemType Directory -Path $logpath
+}
+
+Start-Transcript -Path "$logpath\$todayDetails.txt" -Append
 
 <#Exceptional cases#>
 $Fi1 = "Data_older_than_1_day_will_be_periodically_deleted.txt"
 $Fo1 = "KT"
-$Fo2 = "A002"
 
-$Main_path = Get-ChildItem -Path $path -include * -exclude $Fi1, $Fo1, $Fo2
-$Main_path_2 = $main_path | Where-Object {$_.LastWriteTime -lt $DaysToDelete} | Remove-Item -Recurse -Force -Confirm:$false
+$Main_path = Get-ChildItem -Path $path -include * -exclude $Fi1, $Fo1
+$Main_path_2 = $Main_path | Where-Object {$_.LastWriteTime -lt $DaysToDelete}
+
+foreach ($directory in $Main_path_2) {
+    if (Test-Path $directory) {
+        Remove-Item $path -Force -Confirm:$false -ErrorAction SilentlyContinue
+        Write-Host "File '$path' deleted."
+    } else {
+        Write-Host "File '$path' not found."
+    }
+}
+
+Stop-Transcript
