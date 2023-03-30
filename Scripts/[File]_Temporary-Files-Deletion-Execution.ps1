@@ -13,10 +13,10 @@
         : Script was modified to remove the files on a daily basis, not an weekly basis.
 #>
 Get-date
+$today = Get-Date
 $todayDetails = $today.ToString("yyyy-MM-dd_HH-mm")
 
 (Get-Date).AddDays(-1)
-$today = Get-Date
 $DaysToDelete = $today.AddDays(-1)
 $path = "\\s191f0000004.kr191.corpintra.net\a191_t-temp"
 
@@ -42,10 +42,10 @@ $Main_path_2 = $Main_path | Where-Object {$_.LastWriteTime -lt $DaysToDelete}
 
 foreach ($directory in $Main_path_2) {
     if (Test-Path $directory) {
-        Remove-Item $directory -Force -Confirm:$false -ErrorAction SilentlyContinue
-        Write-Host "File '$directory' deleted."
+        Remove-Item $directory.FullName -Recurse -Confirm:$false -Force -ErrorAction SilentlyContinue
+        Write-Host "File '$directory.FullName' deleted."
     } else {
-        Write-Host "File '$directory' not found."
+        Write-Host "File '$directory.FullName' not found."
     }
 }
 
