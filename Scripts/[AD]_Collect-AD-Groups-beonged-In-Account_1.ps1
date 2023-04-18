@@ -8,7 +8,7 @@
 		Created on:   	20th Mar., 2023
 		Created by:   	Jimmy Lee
 		Contact to:   	keenku00@naver.com
-		Filename:     	[AD]_Collect-AD-Groups-beonged-In-Account.ps1
+		Filename:     	[AD]_Collect-AD-Groups-beonged-In-Account_1.ps1
 		===========================================================================		
     .Configuration Mnagement
     2023.03.20
@@ -17,6 +17,10 @@
         : UAT done
     2023.03.20
         : Upload in Git
+    2023.04.18
+        : The file tite was chaned as below as the subsequent script was newly created.
+		As-Was: [AD]_Collect-AD-Groups-beonged-In-Account.ps1
+		To-Be: [AD]_Collect-AD-Groups-beonged-In-Account_1.ps1
 #>
 
 Get-Date
