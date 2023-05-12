@@ -5,9 +5,9 @@ All PowerShell scripts mentioned in this repository are created for IT security 
 
 * 01.Command_Prompt_(Microsoft_Windows)
 * 02.Powershell_Learning
-* 03.Powershell_Script
-* 04.WMI
-* 05.Powershell_Network
+* 03.Powershell_Security
+* 04.Powershell_RPA
+* 05.Powershell_Network & System
 * 06.Powershell_Popup
 * 07.Powershell_Program
 * 08.Powershell_ActiveDirectory
