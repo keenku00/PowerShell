@@ -23,10 +23,10 @@
 Import-Module ActiveDirectory
 
 # Specify the OU path
-$ouPath = "The OU Path"  # Update with your OU path
+$ouPath = "OU=YourOU,DC=YourDomain,DC=com"  # Update with your OU path
 
 # Specify the attribute name to retrieve
-$attributeName = "Attribute_Vaule"  # Update with the desired attribute name
+$attributeName = "AttributeToRetrieve"  # Update with the desired attribute name
 
 # Get the user accounts from the OU
 $users = Get-ADUser -Filter * -SearchBase $ouPath -Properties *
@@ -36,7 +36,7 @@ $collectedInfo = @()
 
 # Iterate over the user accounts and collect the attribute value along with user information
 foreach ($user in $users) {
-    $info = [ordered]@{
+    $info = [PSCustomObject]@{
         User = $user.SamAccountName
         Attribute = $attributeName
         Value = $user.$attributeName
@@ -44,5 +44,5 @@ foreach ($user in $users) {
     $collectedInfo += $info
 }
 
-# Display the collected information
-$collectedInfo
+# Export the collected information to a CSV file
+$collectedInfo | Export-Csv -Path "test.csv" -NoTypeInformation
