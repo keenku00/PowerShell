@@ -1,0 +1,59 @@
+# Specify the path to the input file
+$InputFilePath = "K:\VMC-VA\Options\voters.txt"
+
+# Specify the path to the output file_1
+$OutputFilePath = "K:\VMC-VA\Options\voters_result.txt"
+
+# Specify the path to the output file for masking
+$OutputFilePath_2 = "K:\VMC-VA\Public\voters_result.txt"
+
+# Read the contents of the input file
+$lines = Get-Content -Path $InputFilePath
+
+# Create a hashtable to store the latest occurrence of each unique key
+$uniqueLines = @{}
+
+# Iterate through the lines and keep the latest occurrence of each unique key
+foreach ($line in $lines) {
+    $values = $line -split ' // '
+
+    # Extract the key and timestamp from the line
+    $key = $values[0]
+    $timestamp = $values[-1]
+
+    # Check if the key already exists in the hashtable
+    if ($uniqueLines.ContainsKey($key)) {
+        # Compare the timestamps and update the hashtable with the latest occurrence
+        if ($timestamp -gt $uniqueLines[$key][-1]) {
+            $uniqueLines[$key] = $values
+        }
+    } else {
+        # If the key is encountered for the first time, add it to the hashtable
+        $uniqueLines[$key] = $values
+    }
+}
+
+# Convert the hashtable values back to lines
+$uniqueLinesValues = $uniqueLines.Values | ForEach-Object { $_ -join ' // ' }
+
+# Write the unique lines to the output file
+$uniqueLinesValues | Set-Content -Path $OutputFilePath
+
+
+############################################################
+
+$lines = Get-Content -Path $OutputFilePath
+
+# Create an array to store the modified lines
+$modifiedLines = @()
+
+# Iterate through the lines and replace the first value with ****
+foreach ($line in $lines) {
+    $values = $line -split ' // '
+    $values[0] = "****" + $values[0].Substring(4)
+    $modifiedLine = $values -join ' // '
+    $modifiedLines += $modifiedLine
+}
+
+# Write the modified lines to the second output file
+$modifiedLines | Set-Content -Path $OutputFilePath_2
