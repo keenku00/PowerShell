@@ -8,7 +8,6 @@ This program can function as a Powershell-based in-house voting system or poll.
 
 # Operation process flow diagram 
 ![image](https://github.com/keenku00/PowerShell/assets/46073026/f79aa528-16af-412e-8695-06b76ce6d07f)
-Contents_2
 
 # Revision History
 
