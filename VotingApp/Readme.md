@@ -1,4 +1,4 @@
-<img width="833" alt="Vote_Application_OPM-Diagram" src="https://github.com/keenku00/PowerShell/assets/46073026/05505443-545c-45c1-9135-ba2aa8a7c337"># Application
+# Application
 This program can function as a Powershell-based in-house voting system or poll.
 
 # Prerequired system & function
