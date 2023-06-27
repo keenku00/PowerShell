@@ -1,0 +1,169 @@
+Add-Type -AssemblyName System.Windows.Forms
+
+#Authentication and check available key
+####################################################
+
+$currentUserName = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+$currentUserIdentification = $currentUserName.Split('\')[-1]
+
+$csvFile = Import-Csv -Path "\\s191f0000004.kr191.corpintra.net\A191_S-SHARE\2. Company Information_DTK\IT\DTK_WMC-VA\wmc-va\Remaining_ticket.csv"
+
+$matchedUser = $csvFile | Where-Object { $_.PSObject.Properties.Value[0] -eq $currentUserIdentification }
+
+if ($matchedUser) {
+    if ($matchedUser.PSObject.Properties.Value[3] -eq "0") {
+        Write-Output "All available counts allocated to you have been exhausted, so you cannot vote."
+        # Exit the loop
+        break
+    } else {
+        # Place your code here for handling the case where the user is registered and has available counts
+        Write-Output "You are registered and have available counts."
+    }
+} else {
+    Write-Output "You're not registered, please ask to DTK-HR team."
+    # Exit the loop
+    break
+}
+
+####################################################
+
+
+#Voting function
+####################################################
+
+# Specify the shared server address and the path to the options file
+$SharedServer = "\\s191f0000004.kr191.corpintra.net\A191_S-SHARE\2. Company Information_DTK\IT\DTK_WMC-VA\wmc-va"
+$OptionsFilePath = Join-Path -Path $SharedServer -ChildPath "options.txt"
+$VotersFilePath = Join-Path -Path $SharedServer -ChildPath "voters.txt"
+
+# Read the options from the file
+$Options = Get-Content -Path $OptionsFilePath
+
+# Create a new form
+$Form = New-Object System.Windows.Forms.Form
+$Form.Text = "Voting Application"
+$Form.AutoSize = $true
+$Form.FormBorderStyle = "FixedDialog"
+$Form.StartPosition = "CenterScreen"
+
+# Create a label for displaying the options
+$LabelOptions = New-Object System.Windows.Forms.Label
+$LabelOptions.Text = "Voting Cars:"
+$Form.Controls.Add($LabelOptions)
+
+# Create radio buttons for each option
+$OptionKeys = 1..$Options.Count
+foreach ($key in $OptionKeys) {
+    $RadioButton = New-Object System.Windows.Forms.RadioButton
+    $RadioButton.Text = "$key. $($Options[$key-1])"
+    $Form.Controls.Add($RadioButton)
+}
+
+# Create a button for submitting the vote
+$ButtonVote = New-Object System.Windows.Forms.Button
+$ButtonVote.Text = "Vote"
+$ButtonVote.DialogResult = [System.Windows.Forms.DialogResult]::OK
+$Form.Controls.Add($ButtonVote)
+
+# Position the form elements
+$padding = 15
+$yPos = $LabelOptions.Bottom + $padding
+
+# Calculate the maximum width of the radio buttons
+$maxRadioButtonWidth = ($Form.ClientSize.Width - (2 * $padding)) + 20
+foreach ($control in $Form.Controls) {
+    $control.Location = New-Object System.Drawing.Point($padding, $yPos)
+    if ($control -is [System.Windows.Forms.RadioButton]) {
+        $control.Width = $maxRadioButtonWidth
+    }
+    $yPos += $control.Height + $padding
+}
+
+# Show the form and handle the voting logic
+$result = $Form.ShowDialog()
+
+if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
+    $selectedOption = $Form.Controls | Where-Object { $_ -is [System.Windows.Forms.RadioButton] -and $_.Checked }
+    if ($selectedOption) {
+        $selectedKey = [int]$selectedOption.Text.Split('.')[0].Trim()
+        if ($Options[$selectedKey-1] -notmatch '^\d+\s\w+$') {
+            $Options[$selectedKey-1] = "$($Options[$selectedKey-1])"  # Set initial vote count to 1
+        } else {
+            $currentVoteCount, $currentOption = $Options[$selectedKey-1] -split '\s'
+            $currentVoteCount = [int]$currentVoteCount + 1
+            $Options[$selectedKey-1] = "$currentVoteCount $currentOption"
+        }
+        [System.Windows.Forms.MessageBox]::Show("Thank you for voting!")
+
+        # Retrieve the current user's identification
+        $currentUserName = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+        $currentUserIdentification = $currentUserName.Split('\')[-1]
+
+        # Remove legacy votes for the current user
+        #$voters = Get-Content -Path $VotersFilePath
+        #$voters = $voters | Where-Object { $_ -notmatch "^$currentUserIdentification" }
+        #$voters | Set-Content -Path $VotersFilePath
+
+        # Store the voter's identification and vote time in the shared folder
+        $Date = Get-Date
+        $today = $date.ToString("yyyy-MM-dd")
+        $todayDetails = $date.ToString("yyyy-MM-dd_HH-mm-ss")
+        $voterRecord = "$currentUserIdentification // $($Options[$selectedKey-1]) // $($todayDetails)"
+        Add-Content -Path $VotersFilePath -Value $voterRecord
+    } else {
+        [System.Windows.Forms.MessageBox]::Show("Invalid vote. Please select an option.")
+    }
+}
+
+# Display the updated vote counts
+Function ShowVoteCounts {
+    $voteCounts = $Options | ForEach-Object { "$($_.Split()[0]) votes for Option $($_.Split()[1..$_.Split().Count] -join ' ')" }
+    #[System.Windows.Forms.MessageBox]::Show("Vote Counts:`n$($voteCounts)")
+}
+
+# Call the function to display the vote counts
+ShowVoteCounts
+
+# Dispose the form
+$Form.Dispose()
+
+# Print out Which option was chosen to what extent
+####################################################
+Write-host "Voting preference results are displayed in 5 seconds."
+# Pause the script for 5 seconds
+    Start-Sleep -Seconds 5
+
+# Provide the path to the "voters.txt" file
+$filePath = "\\s191f0000004.kr191.corpintra.net\A191_S-SHARE\5. Cross-Department\DTK-wmc-va\voters_result.txt"
+
+# Read the contents of the file
+$voters = Get-Content $filePath
+
+# Provide the path to the "options.txt" file
+$optionsFilePath = "\\s191f0000004.kr191.corpintra.net\A191_S-SHARE\2. Company Information_DTK\IT\DTK_WMC-VA\wmc-va\options.txt"
+
+# Read the options from the "options.txt" file
+$options = Get-Content $optionsFilePath | ForEach-Object { $_.Trim() }
+
+# Create a hashtable to store the option counts
+$optionsCounts = @{}
+foreach ($option in $options) {
+    $optionsCounts[$option] = 0
+}
+
+# Process each line in the file
+foreach ($voter in $voters) {
+    $option = $voter.Split(" // ")[4]
+
+    # Increment the count for the selected option
+    if ($optionsCounts.ContainsKey($option)) {
+        $optionsCounts[$option]++
+    }
+}
+
+# Display the results
+$preferred_count = $optionsCounts.GetEnumerator() | ForEach-Object {
+    $_.Name + ": " + $_.Value
+}
+
+Write-host $preferred_count
