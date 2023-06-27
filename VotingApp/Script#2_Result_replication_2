@@ -1,0 +1,86 @@
+# Specify the path to the input file
+$InputFilePath = "\\s191f0000004.kr191.corpintra.net\A191_S-SHARE\2. Company Information_DTK\IT\DTK_WMC-VA\wmc-va\voters.txt"
+
+# Specify the path to the output file_1
+$OutputFilePath = "\\s191f0000004.kr191.corpintra.net\A191_S-SHARE\2. Company Information_DTK\IT\DTK_WMC-VA\wmc-va\voters_result.txt"
+
+# Specify the path to the output file for masking
+$OutputFilePath_2 = "\\s191f0000004.kr191.corpintra.net\A191_S-SHARE\5. Cross-Department\DTK-wmc-va\voters_result.txt"
+
+#####################################################################
+
+# Specify the termination time
+$TerminationTime = Get-Date -Hour 18 -Minute 0 -Second 0
+
+while ($true) {
+    # Check if it's past the termination time
+    if ((Get-Date) -ge $TerminationTime) {
+        Write-Host "Terminating the script."
+        break  # Exit the loop
+    }
+    # Create the output file if it doesn't exist
+    if (-not (Test-Path $OutputFilePath)) {
+        New-Item -ItemType File -Path $OutputFilePath | Out-Null
+    }
+
+    # Create the second output file if it doesn't exist
+    if (-not (Test-Path $OutputFilePath_2)) {
+        New-Item -ItemType File -Path $OutputFilePath_2 | Out-Null
+    }
+
+    #####################################################################
+
+    # Read the contents of the input file
+    $lines = Get-Content -Path $InputFilePath
+
+    # Create a hashtable to store the latest occurrence of each unique key
+    $uniqueLines = @{}
+
+    # Iterate through the lines and keep the latest occurrence of each unique key
+    foreach ($line in $lines) {
+        $values = $line -split ' // '
+
+        # Extract the key and timestamp from the line
+        $key = $values[0]
+        $timestamp = $values[-1]
+
+        # Check if the key already exists in the hashtable
+        if ($uniqueLines.ContainsKey($key)) {
+            # Compare the timestamps and update the hashtable with the latest occurrence
+            if ($timestamp -gt $uniqueLines[$key][-1]) {
+                $uniqueLines[$key] = $values
+            }
+        } else {
+            # If the key is encountered for the first time, add it to the hashtable
+            $uniqueLines[$key] = $values
+        }
+    }
+
+    # Convert the hashtable values back to lines
+    $uniqueLinesValues = $uniqueLines.Values | ForEach-Object { $_ -join ' // ' }
+
+    # Write the unique lines to the output file
+    $uniqueLinesValues | Set-Content -Path $OutputFilePath
+
+
+    ############################################################
+
+    $lines = Get-Content -Path $OutputFilePath
+
+    # Create an array to store the modified lines
+    $modifiedLines = @()
+
+    # Iterate through the lines and replace the first value with ****
+    foreach ($line in $lines) {
+        $values = $line -split ' // '
+        $values[0] = "****" + $values[0].Substring(4)
+        $modifiedLine = $values -join ' // '
+        $modifiedLines += $modifiedLine
+    }
+
+    # Write the modified lines to the second output file
+    $modifiedLines | Set-Content -Path $OutputFilePath_2
+
+    # Pause the script for 3 seconds
+    Start-Sleep -Seconds 3
+}
