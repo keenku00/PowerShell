@@ -9,7 +9,7 @@
 		Created on:   	29th Jun., 2023
 		Created by:   	Jimmy Lee
 		Contact to:   	keenku00@naver.com
-		Filename:       [File-Security]_NTFS-Permission_2-Execution.ps1
+		Filename:       [File-Security]_Retrieve-NTFS-Permission-Extraction-Execution.ps1
 		===========================================================================		
     .Configuration Mnagement
     2023.06.29
