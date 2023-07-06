@@ -1,0 +1,71 @@
+<#
+	.DESCRIPTION
+		: Retrieve/collect data size from the specific predefined paths.
+	
+	.PARAMETER
+
+	.NOTES
+
+    .Configuration Mnagement
+    2023.07.06
+        : Script creation
+    2023.07.06
+        : Upload on Git
+#>
+
+#####################################################################################
+# Option#1
+#####################################################################################
+
+$folderPaths = Get-Content -Path "C:\Path\to\FolderPaths.txt"
+
+$folderSizes = @()
+
+foreach ($folderPath in $folderPaths) {
+    $folderSize = Get-ChildItem -Path $folderPath -File -Recurse |
+        Measure-Object -Property Length -Sum |
+        Select-Object -ExpandProperty Sum
+
+    $folderSizes += [PSCustomObject]@{
+        FolderPath = $folderPath
+        SizeInBytes = $folderSize
+        SizeInKB = $folderSize / 1KB
+        SizeInMB = $folderSize / 1MB
+        SizeInGB = $folderSize / 1GB
+    }
+}
+
+$sumSizeInGB = ($folderSizes | Measure-Object -Property SizeInGB -Sum).Sum
+$sumSizeInGB
+
+#####################################################################################
+# Option#2
+#####################################################################################
+
+$folderPaths = @(
+    "C:\Path\to\Folder1",
+    "C:\Path\to\Folder2",
+    "C:\Path\to\Folder3"
+    # Add more folder paths as needed
+)
+
+$folderSizes = @()
+
+foreach ($folderPath in $folderPaths) {
+    $folderSize = Get-ChildItem -Path $folderPath -Recurse |
+        Where-Object { $_.PSIsContainer } |
+        Measure-Object -Property Length -Sum |
+        Select-Object -ExpandProperty Sum
+
+    $folderSizes += [PSCustomObject]@{
+        FolderPath = $folderPath
+        SizeInBytes = $folderSize
+        SizeInKB = $folderSize / 1KB
+        SizeInMB = $folderSize / 1MB
+        SizeInGB = $folderSize / 1GB
+    }
+}
+
+$folderSizes
+
+
