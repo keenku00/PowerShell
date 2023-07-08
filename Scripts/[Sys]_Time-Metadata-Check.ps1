@@ -22,6 +22,30 @@
         https://stackoverflow.com/questions/44620134/dont-know-how-to-add-bold-to-a-label-in-winforms-powershell
 #>
 
+<#
+	.DESCRIPTION
+	    When managing the Windows-based system, it's common to collect the time metadata.
+        To pre-define the data before executing any operation, the following script was created.
+	.PARAMETER
+	.NOTES
+		===========================================================================
+		Created on:   	4th Feb., 2023
+		Created by:   	Jimmy Lee
+		Contact to:   	keenku00@naver.com
+		Filename:       [Sys]_Time-Metadata-Check.ps1
+		===========================================================================		
+    .Configuration Mnagement
+    2023.02.04
+        : Script creation
+    2023.02.04
+        : UAT done
+    2023.02.04
+        : Upload in Git
+    .Reference
+        https://www.educative.io/answers/what-is-n-in-powershell
+        https://stackoverflow.com/questions/44620134/dont-know-how-to-add-bold-to-a-label-in-winforms-powershell
+#>
+
 $today = Get-Date
 $todayDetails = $today.ToString("yyyy-MM-dd_HH-mm")
 $New_repository = New-Item -Path "$env:USERPROFILE\Desktop\$todayDetails" -ItemType Directory
@@ -132,6 +156,8 @@ $mainForm.Controls.Add($okButton)
 
 [void] $mainForm.ShowDialog()
 
+###################################################
+# Time variables arrangement
 $datePicker.Value
 $minTimePicker.Value
 
@@ -143,5 +169,32 @@ $minTimePicker.Value.TimeOfDay
 
 $enddatePicker.Value.Date
 $maxTimePicker.Value.TimeOfDay
+
+###################################################
+# Get the original date and time from $datePicker.Value
+$originalDateTime = $datePicker.Value
+
+# Get the time component from $minTimePicker.Value.TimeOfDay
+$timeComponent = $minTimePicker.Value.TimeOfDay
+
+# Create a new DateTime object by adding the time component to the original date and time
+$newDateTime = $originalDateTime.Date.Add($timeComponent)
+
+# Output the updated date and time
+Write-Host $newDateTime
+
+###################################################
+# Get the original date and time from $enddatePicker.Value
+$endDate = $enddatePicker.Value
+
+# Get the time component from $maxTimePicker.Value.TimeOfDay
+$maxTime = $maxTimePicker.Value.TimeOfDay
+
+# Create a new DateTime object with the original date and updated time
+$newEndDate = $endDate.Date.Add($maxTime)
+
+# Output the updated date and time
+Write-Host $newEndDate
+###################################################
 
 Stop-Transcript
