@@ -22,30 +22,6 @@
         https://stackoverflow.com/questions/44620134/dont-know-how-to-add-bold-to-a-label-in-winforms-powershell
 #>
 
-<#
-	.DESCRIPTION
-	    When managing the Windows-based system, it's common to collect the time metadata.
-        To pre-define the data before executing any operation, the following script was created.
-	.PARAMETER
-	.NOTES
-		===========================================================================
-		Created on:   	4th Feb., 2023
-		Created by:   	Jimmy Lee
-		Contact to:   	keenku00@naver.com
-		Filename:       [Sys]_Time-Metadata-Check.ps1
-		===========================================================================		
-    .Configuration Mnagement
-    2023.02.04
-        : Script creation
-    2023.02.04
-        : UAT done
-    2023.02.04
-        : Upload in Git
-    .Reference
-        https://www.educative.io/answers/what-is-n-in-powershell
-        https://stackoverflow.com/questions/44620134/dont-know-how-to-add-bold-to-a-label-in-winforms-powershell
-#>
-
 $today = Get-Date
 $todayDetails = $today.ToString("yyyy-MM-dd_HH-mm")
 $New_repository = New-Item -Path "$env:USERPROFILE\Desktop\$todayDetails" -ItemType Directory
