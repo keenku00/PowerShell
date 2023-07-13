@@ -52,8 +52,7 @@ $folderPaths = @(
 $folderSizes = @()
 
 foreach ($folderPath in $folderPaths) {
-    $folderSize = Get-ChildItem -Path $folderPath -Recurse |
-        Where-Object { $_.PSIsContainer } |
+    $folderSize = Get-ChildItem -Path $folderPath -Recurse -File |
         Measure-Object -Property Length -Sum |
         Select-Object -ExpandProperty Sum
 
@@ -67,5 +66,4 @@ foreach ($folderPath in $folderPaths) {
 }
 
 $folderSizes
-
 
