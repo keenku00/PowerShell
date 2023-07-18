@@ -1,0 +1,68 @@
+# Import the WinSCP .NET assembly
+Add-Type -Path "C:\Program Files (x86)\WinSCP\WinSCPnet.dll"
+
+# Set up the session options
+$sessionOptions = New-Object WinSCP.SessionOptions -Property @{
+    Protocol = [WinSCP.Protocol]::Sftp
+    HostName = "eu-central-1.sftpcloud.io"
+    UserName = "49d8319acf57422dba13136a1a5209d4"
+    Password = "A9kbhEJI9zW5MVHPlysHTC5Fogp79ofj"
+    SshHostKeyFingerprint = "ssh-ed25519 255 Gb8y3KIFNEqr5XoqEBXIC8RmZ3RHFuCkwVHWJEr8L58"  # Optional: Add the server's SSH host key fingerprint here
+}
+
+# Path to the local directory to monitor
+$localDirectoryPath = "C:\Users\LEEJIMM\TEST01\"
+
+# Path to the remote directory where you want to move the files
+$remoteDirectoryPath = "/TEST/"
+
+function FileExistsOnRemoteServer($session, $remoteDirectoryPath, $fileName) {
+    # Get the list of files and directories in the remote directory
+    $remoteFiles = $session.EnumerateRemoteFiles($remoteDirectoryPath, $null, [WinSCP.EnumerationOptions]::None)
+
+    # Check if the file with the same name exists on the remote server
+    foreach ($remoteFile in $remoteFiles) {
+        if ($remoteFile.IsDirectory -eq $false -and $remoteFile.Name -eq $fileName) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
+# Create a new session
+$session = New-Object WinSCP.Session
+
+while ($true) {
+    # Get all files in the local directory
+    $files = Get-ChildItem -Path $localDirectoryPath -File
+
+    foreach ($file in $files) {
+        $localFilePath = $file.FullName
+        $fileName = $file.Name
+
+        # Create a new session for each file transfer
+        $session.Dispose()
+        $session = New-Object WinSCP.Session
+
+        try {
+            # Connect to the remote server
+            $session.Open($sessionOptions)
+
+            # Check if the file already exists on the remote server
+            if (FileExistsOnRemoteServer $session $remoteDirectoryPath $fileName) {
+                Write-Host "File '$fileName' already exists on the remote server. Skipping..."
+                continue
+            }
+
+            # Move the file to the remote server
+            $session.PutFiles($localFilePath, $remoteDirectoryPath).Check()
+        }
+        catch {
+            Write-Host "Error: $($_.Exception.Message)"
+        }
+    }
+
+    # Delay for a specific time before checking again
+    Start-Sleep -Seconds 10
+}
