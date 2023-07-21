@@ -7,7 +7,7 @@ This program can function as a Powershell-based in-house voting system or poll.
 3. SMTP relay server
 
 # Operation process flow diagram 
-![image](https://github.com/keenku00/PowerShell/assets/46073026/1330c152-5ea7-4948-8823-2596de00b811)
+![image](https://github.com/keenku00/PowerShell/assets/46073026/3aaf4b37-ed89-46ff-a220-34699a0a4fbc)
 
 # Revision History
 
