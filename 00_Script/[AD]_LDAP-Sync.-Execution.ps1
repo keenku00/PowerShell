@@ -26,8 +26,8 @@ $LDAPServer = "ldap-test.net"
 $OUPath = "OU=test02,OU=test01,DC=a,DC=b,DC=c"
 
 # Hardcoded credentials (replace with actual domain credentials)
-$Username = "a191_s_fileservice"
-$Password = "buKfmX(=;5UWDBQR[208" | ConvertTo-SecureString -AsPlainText -Force
+$Username = "test_id"
+$Password = "password" | ConvertTo-SecureString -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Username, $Password
 
 # Import the ActiveDirectory module
