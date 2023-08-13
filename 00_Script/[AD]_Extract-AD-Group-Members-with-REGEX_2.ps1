@@ -21,8 +21,10 @@
         : Upload in Git
 #>
 
+#--------------------------------------------------------------------------------------------
 #Condition_2
-$All_2_Group = Get-ADGroup -Filter * -SearchBase "OU=A191, DC=apac, DC=corpdir, DC=net" -Properties *
+#--------------------------------------------------------------------------------------------
+$All_2_Group = Get-ADGroup -Filter * -SearchBase "OU=A, DC=test, DC=corpdir, DC=net" -Properties *
 $regex2 = 'A191_K-'
 $groupData = @()
 $pattern = 'sAMAccountName="([^"]*)"'
@@ -45,9 +47,10 @@ foreach ($group in $All_2_Group) {
 
 $groupData | Export-Csv -Path "AD_Groups_Information_Type1.csv" -NoTypeInformation
 
-
+#--------------------------------------------------------------------------------------------
 #Condition_1
-$All_1_Group = Get-ADGroup -Filter * -SearchBase "OU=A191, DC=apac, DC=corpdir, DC=net" -Properties *
+#--------------------------------------------------------------------------------------------
+$All_1_Group = Get-ADGroup -Filter * -SearchBase "OU=A, DC=test, DC=corpdir, DC=net" -Properties *
 $regex1 = 'A191_O-'
 $groupData = @()
 $pattern = 'sAMAccountName="([^"]*)"'
@@ -70,3 +73,35 @@ foreach ($group in $All_1_Group) {
 }
 
 $groupData | Export-Csv -Path "AD_Groups_Information_Type2.csv" -NoTypeInformation
+
+#--------------------------------------------------------------------------------------------
+#Condition_3
+#--------------------------------------------------------------------------------------------
+$All_2_Group = Get-ADGroup -Filter * -SearchBase "OU=A191, DC=apac, DC=corpdir, DC=net" -Properties *
+$regex2 = @(
+    'AD_Group',
+    'AD_Group2',
+    'AD_Groups3'
+)
+$groupData = @()
+$pattern = 'sAMAccountName="([^"]*)"'
+
+foreach ($group in $All_2_Group) {
+    $matches = [regex]::Matches($group.dcxObjectOwner, $pattern)
+    $accountNames = foreach ($match in $matches) {
+    $match.Groups[1].Value
+    }
+    foreach ($regexlist2 in $regex2) {
+    if ($group.Name -match $regexlist2) {
+        Write-Host $group.Name
+        $groupMembers = Get-ADGroupMember -Identity $group.Name | Select-Object Name
+        $groupData += New-Object -TypeName PSObject -Property @{
+            Ownership = $accountNames -join ', '
+            GroupName = $group.Name
+            Members = $groupMembers.Name -join ', '
+        }
+    }
+}
+}
+
+$groupData | Export-Csv -Path "AD_Groups_Information_Type13.csv" -NoTypeInformation
