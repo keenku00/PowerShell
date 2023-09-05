@@ -1,3 +1,7 @@
+## Cautions ##
+# I seriously emphasize that the crawl scripts below should not be used on unauthorized systems.
+## Cautions ##
+
 # Define the path to the HtmlAgilityPack.dll file (replace with the actual path)
 $htmlAgilityPackPath = "C:\Windows\System32\HtmlAgilityPack.dll"
 
@@ -5,7 +9,7 @@ $htmlAgilityPackPath = "C:\Windows\System32\HtmlAgilityPack.dll"
 Add-Type -Path $htmlAgilityPackPath
 
 # Define the URL of the website you want to crawl
-$url = "https://hello-bryan.tistory.com/365"
+$url = "https://test.com"
 
 # Send an HTTP request to the URL
 $response = Invoke-WebRequest -Uri $url
