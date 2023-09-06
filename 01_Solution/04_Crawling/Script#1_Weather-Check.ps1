@@ -1,5 +1,8 @@
 ## Cautions ##
 # I seriously emphasize that the crawl scripts below should not be used on unauthorized systems.
+# The following error could happen when the .dll file is downloaded on Internet. If so, please tuilize the Script#2
+# Add-Type : Could not load file or assembly 'file:///C:\Windows\System32\HtmlAgilityPack.dll' or one of its dependencies. Operation is not supported. (Exception from HRESULT: 
+0x80131515)
 ## Cautions ##
 
 # Define the path to the HtmlAgilityPack.dll file (replace with the actual path)
