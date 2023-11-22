@@ -1,3 +1,27 @@
+<#
+	.DESCRIPTION
+        Implementing a complicated password on an internal system is crucial to prevent a cyber security issue.
+        This is a script for creating complex passwords with appropriate combinations of alphabets and numbers.
+  
+	.PARAMETER
+	.NOTES
+		===========================================================================
+		Created on:   	22nd Nov. 2023
+		Created by:   	Jimmy Lee
+		Contact to:   	keenku00@naver.com
+		Filename:     	[Security]_Random-Password-Creation.ps1
+		===========================================================================		
+    .Configuration Mnagement
+    2023.06.20
+        : Script creation
+    2023.06.20
+        : UAT done
+    2023.06.20
+        : Upload in Git
+    2023.11.22
+        : Updated, then upload again
+#>
+
 function Get-RandomPassword {
     param (
         [Parameter(Mandatory)]
@@ -42,4 +66,20 @@ function Get-RandomPassword {
     }
     return $password
 }
-Get-RandomPassword 15 8 2 2 3
+
+# 결과를 저장할 배열 선언
+$passwords = @()
+
+# 10번 반복하여 함수 실행하고 결과를 배열에 추가
+for ($i = 1; $i -le 10; $i++) {
+    $password = Get-RandomPassword 15 8 2 2 3
+    $passwords += [PSCustomObject]@{
+        Index = $i
+        Password = $password
+    }
+}
+
+# Index를 기준으로 정렬하여 출력
+$passwords | Sort-Object Index | ForEach-Object {
+    "Password $($_.Index): $($_.Password)"
+}
