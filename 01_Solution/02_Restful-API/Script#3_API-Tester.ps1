@@ -21,21 +21,68 @@
     2023.12.23
         : Upload in Git
 #>
-
-# 변수 설정
-$apiKey = "TTTYNMmg43pkoVAkKcA9AcMn3uq2dTTTA2Cq0ew2y21qVBf2FesTpaYPw5UaqTTT"
-$uri = "https://as.api.daimlertruck.com/dtk-dms-live/prod-sns-01"
+#---------------------------------------------------------------
+# USE CASE#1: OAuth 2.0 authentication using Bearer Token
+#---------------------------------------------------------------
+# Bearer Token variable setup
+$accessToken = "YOUR_ACCESS_TOKEN"
+$uri = "https://as.api.tester.com/app-live/prod-sns-01"
 $httpMethod = "Get"
 
-# 헤더 설정
+# Setting headers based on the authentication method
+$headers = @{
+    "Authorization" = "Bearer $accessToken"
+}
+
+# Making the REST call
+$response = Invoke-RestMethod -Uri $uri -Headers $headers -Method $httpMethod
+
+# Displaying the response
+$response
+$response | Format-List * -Force
+
+#---------------------------------------------------------------
+# USE CASE#2: X-API-Key
+#---------------------------------------------------------------
+# X-api-Key variable setup
+$apiKey = "YOUR_API_KEY"
+$uri = "https://as.api.tester.com/app-live/prod-sns-01"
+$httpMethod = "Get"
+
+# Setting headers
 $headers = @{
     "x-api-key" = $apiKey
 }
 
-# REST 호출
+# Making the REST call
 $response = Invoke-RestMethod -Uri $uri -Headers $headers -Method $httpMethod
 
-# 응답 출력
+# Displaying the response
 $response
 $response | Format-List * -Force
 
+#---------------------------------------------------------------
+# USE CASE#3: HTTP Basic Authentication
+#---------------------------------------------------------------
+# Username and Password variable setup
+$username = "YOUR_USERNAME"
+$password = "YOUR_PASSWORD"
+$uri = "https://as.api.tester.com/app-live/prod-sns-01"
+$httpMethod = "Get"
+
+# Generating authentication information
+$authInfo = ($username + ":" + $password)
+$encodedAuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($authInfo))
+$basicAuthHeader = "Basic " + $encodedAuthInfo
+
+# Setting headers
+$headers = @{
+    "Authorization" = $basicAuthHeader
+}
+
+# Making the REST call
+$response = Invoke-RestMethod -Uri $uri -Headers $headers -Method $httpMethod
+
+# Displaying the response
+$response
+$response | Format-List * -Force
