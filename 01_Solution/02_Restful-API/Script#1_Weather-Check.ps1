@@ -1,3 +1,27 @@
+<#
+	.DESCRIPTION
+     In the Powershell environment, the value is received from the OpenAPI server through the API Key authentication header.
+	
+	.PARAMETER
+
+	.NOTES
+		===========================================================================
+		Created on:   	20th Aug. 2023
+		Created by:   	Jimmy Lee
+		Contact to:   	keenku00@naver.com
+		Filename:     	Script#1_Weather-Check.ps1
+		===========================================================================		
+
+    .Configuration Mnagement
+    2023.08.20
+        : Script creation
+    2023.08.20
+        : UAT done
+    2023.08.20
+        : Upload in Git
+#>
+
+# As it is a free API version, there is no need to worry about revealing the key value.
 $accessKey = "05cce85339f0c735ff384c83c8b4c214"
 $city = "Seoul"
 $weatherApiUrl = "http://api.weatherstack.com/current?access_key=$accessKey&query=$city"
