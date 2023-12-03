@@ -1,3 +1,26 @@
+<#
+	.DESCRIPTION
+     In the Powershell environment, it's an excersise script to create a new Object type through Invoke-RestMethod and Invoke-RestAPI cmdlet.
+	
+	.PARAMETER
+
+	.NOTES
+		===========================================================================
+		Created on:   	21th Aug. 2023
+		Created by:   	Jimmy Lee
+		Contact to:   	keenku00@naver.com
+		Filename:     	Script#2_Object-Creation.ps1
+		===========================================================================		
+
+    .Configuration Mnagement
+    2023.08.21
+        : Script creation
+    2023.08.21
+        : UAT done
+    2023.08.21
+        : Upload in Git
+#>
+
 function Invoke-RestApi {
     param (
         [string]$Uri,
